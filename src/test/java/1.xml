@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection>
+    <elements>
+        <element1/>
+            <id>111</id>
+            <name>Vasya</name>
+        <coordinates>
+            <coordinatesX>767</coordinatesX>
+            <coordinatesY>505</coordinatesY>
+        </coordinates>
+        <salary>0.5</salary>
+        <startDate>2020-12-11T11:50:20+03:00</startDate>
+        <endDate>2021-01-21T20:32:54+03:00</endDate>
+        <position>BAKER</position>
+        <person>
+            <pHeight>193</pHeight>
+            <pWeight>87</pWeight>
+        </person>
+    </elements>
+</collection>
