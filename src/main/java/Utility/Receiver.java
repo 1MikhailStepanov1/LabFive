@@ -69,4 +69,8 @@ public class Receiver{
     public Collection<Worker> GetCollection(){
         return new LinkedList(collection);
     }
+    public void load(Collection<Worker> collectionFromFile){
+        collection.addAll(collectionFromFile);
+        ExeDone=true;
+    }
 }
