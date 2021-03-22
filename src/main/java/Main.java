@@ -13,6 +13,7 @@ public class Main {
         WorkerToUser workerToUser = new WorkerToUser();
         Invoker invoker = new Invoker(workerFactory, receiver, workerToUser);
         CommandReader commandReader = new CommandReader(scannerToCommands,invoker);
+        receiver.load(fileScanner.parse());
         commandReader.ActiveMode();
     }
 

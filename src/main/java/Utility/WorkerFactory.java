@@ -17,7 +17,7 @@ import java.util.Date;
 
 
 public class WorkerFactory {
-    private Console console;
+    private final Console console;
     private Long id;
 
     public Long getId() {
@@ -26,6 +26,7 @@ public class WorkerFactory {
 
     public WorkerFactory (Long StartId, Console console){
         this.id = StartId;
+        this.console = console;
     }
 
     public Worker CreateWorker(String name, Coordinates coordinates, double salary, ZonedDateTime startDate, ZonedDateTime endDate, Position position, Person person) throws NullFieldException, IncorrectValueException{
@@ -177,7 +178,5 @@ public class WorkerFactory {
         }
         return CreateWorker(name, new Coordinates(x,y), salary, startDate, endDate, position, new Person(height, weight));
     }
-    public void setStartId(long id1){
-        id = id1;
-    }
+    public void setStartId(long id1){id = id1;}
 }

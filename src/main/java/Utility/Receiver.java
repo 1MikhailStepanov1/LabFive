@@ -73,4 +73,13 @@ public class Receiver{
         collection.addAll(collectionFromFile);
         ExeDone=true;
     }
+    public long getMaxId(){
+        long maxId = -1;
+        for (Worker worker : collection){
+            if (worker.getId()>maxId){
+                maxId = worker.getId();
+            }
+        }
+        return maxId;
+    }
 }
