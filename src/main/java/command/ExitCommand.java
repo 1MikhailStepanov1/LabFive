@@ -1,16 +1,25 @@
 package command;
 
 
-import Utility.Invoker;
+import utility.Invoker;
 
-public class ExitCommand extends CommandAbstract{
-    private final Invoker inv;
-    public ExitCommand(Invoker invoker){
+/** Exit command
+ * Stops command reader. This action stops work of the whole app
+ * @see utility.CommandReader
+ */
+public class ExitCommand extends CommandAbstract {
+    private final Invoker invoker;
+
+    /** Command constructor
+     * @param invoker - invoker
+     */
+    public ExitCommand(Invoker invoker) {
         super("Exit", "End programme without saving to the file");
-        inv=invoker;
+        this.invoker = invoker;
     }
+
     @Override
-    public void exe(String arg){
-        inv.RequestExit(this);
+    public void exe(String arg) {
+        invoker.requestExit(this);
     }
 }

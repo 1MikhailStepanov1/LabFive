@@ -1,26 +1,35 @@
 package command;
 
-import Data.Worker;
-import Utility.Receiver;
-import Utility.WorkerToUser;
+import data.Worker;
+import utility.CollectionManager;
+import utility.WorkerToUser;
 
 import java.util.Collection;
 
-public class ShowCommand extends CommandAbstract{
-    private final Receiver receiver;
+/** Show command
+ * Show all elements of the collection
+ */
+public class ShowCommand extends CommandAbstract {
+    private final CollectionManager collectionManager;
     private final WorkerToUser workerToUser;
-    public ShowCommand(Receiver receiver, WorkerToUser workerToUser){
-        super ("Show", "Show all collection`s elements into strings");
-        this.receiver = receiver;
+
+    /** Command constructor
+     * @param collectionManager - collection manager, receiver
+     * @param workerToUser - used to show worker to user
+     */
+    public ShowCommand(CollectionManager collectionManager, WorkerToUser workerToUser) {
+        super("Show", "Show all collection`s elements into strings");
+        this.collectionManager = collectionManager;
         this.workerToUser = workerToUser;
     }
+
     @Override
-    public void exe(String arg){
-        Collection<Worker> collection = receiver.GetCollection();
-        if (collection.size()==0){
+    public void exe(String arg) {
+        Collection<Worker> collection = collectionManager.getCollection();
+        if (collection.size() == 0) {
             System.out.println("There is no elements in collection.");
         }
-        for (Worker w : collection){
+        for (Worker w : collection) {
             workerToUser.WorkerToConsole(w);
         }
     }

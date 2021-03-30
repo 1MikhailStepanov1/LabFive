@@ -1,17 +1,25 @@
 package command;
 
 
-import Utility.Receiver;
+import utility.CollectionManager;
 
-public class InfoCommand extends CommandAbstract{
-    private final Receiver receiver;
-    public InfoCommand(Receiver receiver){
+/** Info command
+ * Show information about collection
+ */
+public class InfoCommand extends CommandAbstract {
+    private final CollectionManager collectionManager;
+
+    /** Command constructor
+     * @param collectionManager - collection manager, receiver
+     */
+    public InfoCommand(CollectionManager collectionManager) {
         super("Info", "Show information about collection (type, initialization time and etc.)");
-        this.receiver = receiver;
+        this.collectionManager = collectionManager;
     }
+
     @Override
     public void exe(String arg) {
-        for (String line : receiver.getInfo()){
+        for (String line : collectionManager.getInfo()) {
             System.out.println(line);
         }
     }

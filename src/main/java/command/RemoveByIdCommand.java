@@ -1,34 +1,38 @@
 package command;
 
-import Exceptions.IncorrectValueException;
-import Exceptions.NullFieldException;
-import Utility.Console;
-import Utility.Receiver;
-import Utility.WorkerFactory;
+import utility.CollectionManager;
 
-public class RemoveByIdCommand extends CommandAbstract{
-    private final Receiver receiver;
-    public RemoveByIdCommand(Receiver receiver){
+/** Remove by id command
+ * Remove element of the cllection with indicated id
+ */
+public class RemoveByIdCommand extends CommandAbstract {
+    private final CollectionManager collectionManager;
+
+    /** Command constructor
+     * @param collectionManager - collection manager, receiver
+     */
+    public RemoveByIdCommand(CollectionManager collectionManager) {
         super("Remove by id {id}", "Delete element with indicated id");
-        this.receiver = receiver;
+        this.collectionManager = collectionManager;
     }
+
     @Override
-    public void exe(String arg){
-        if (arg.length()==0){
-            System.out.println("Argument is needed.");
+    public void exe(String arg) {
+        if (arg.isEmpty()) {
+            System.out.println("Argument is required.");
             return;
         }
         long id;
         try {
             id = Long.parseLong(arg);
-        }catch (NumberFormatException exception){
+        } catch (NumberFormatException exception) {
             System.out.println("Input isn't id.");
             return;
         }
         try {
-            receiver.remove(receiver.getById(id));
+            collectionManager.remove(collectionManager.getById(id));
             System.out.println("Element has been removed.");
-        }catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             System.out.println("Worker with detected id wasn't found.");
         }
     }

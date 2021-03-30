@@ -1,19 +1,30 @@
 package command;
 
-public class CommandAbstract implements CommandInterface{
-    private String name;
-    private String description;
-    public CommandAbstract(String name, String description){
+/**
+ * Abstract command class contains name and description
+ */
+public class CommandAbstract implements CommandInterface {
+    private final String name;
+    private final String description;
+
+    public CommandAbstract(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
+    /**
+     * @return Name of the command
+     */
     @Override
-    public  String getName(){
+    public String getName() {
         return name;
     }
+
+    /**
+     * @return Description of the command
+     */
     @Override
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
 

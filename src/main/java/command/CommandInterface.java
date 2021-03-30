@@ -1,11 +1,12 @@
 package command;
 
+/**
+ * Interface for commands
+ */
 public interface CommandInterface {
-    default String getName(){
-        return "default name";
-    }
-    default String getDescription(){
-        return "default description";
-    }
+    String getName();
+
+    String getDescription();
+
     void exe(String arg);
 }

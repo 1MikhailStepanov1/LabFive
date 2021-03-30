@@ -1,4 +1,4 @@
-package Data;
+package data;
 
 import java.time.ZonedDateTime;
 
@@ -13,7 +13,7 @@ public class Worker implements Comparable<Worker> {
     private Position position; //Поле может быть null
     private Person person; //Поле может быть null
 
-    public Worker(Long id, String name, Coordinates coordinates, ZonedDateTime creationDate, double salary, ZonedDateTime startDate, ZonedDateTime endDate, Position position, Person person){
+    public Worker(Long id, String name, Coordinates coordinates, ZonedDateTime creationDate, double salary, ZonedDateTime startDate, ZonedDateTime endDate, Position position, Person person) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -25,40 +25,62 @@ public class Worker implements Comparable<Worker> {
         this.person = person;
     }
 
-    public double getValue(){
+    public double getValue() {
         return salary + position.ordinal();
     }
+
     @Override
-    public int compareTo (Worker w) {
-        if(this.getValue()>w.getValue()){return -1;}
-        if (this.getValue()<w.getValue()){return 1;}
+    public int compareTo(Worker w) {
+        if (this.getValue() > w.getValue()) {
+            return -1;
+        }
+        if (this.getValue() < w.getValue()) {
+            return 1;
+        }
         return 0;
     }
 
-    public Long getId(){
+    public Long getId() {
         return id;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public Coordinates getCoordinates(){ return coordinates;}
-    public ZonedDateTime getCreationDate(){return creationDate;}
-    public double getSalary(){
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public ZonedDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public double getSalary() {
         return salary;
     }
-    public ZonedDateTime getStartDate(){ return startDate; }
-    public ZonedDateTime getEndDate(){ return endDate; }
-    public Position getPosition(){
+
+    public ZonedDateTime getStartDate() {
+        return startDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public Position getPosition() {
         return position;
     }
-    public Person getPerson(){
+
+    public Person getPerson() {
         return person;
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         String info = "";
         info += "Worker №" + id;
-        info += "(added " +creationDate + ")";
+        info += "(added " + creationDate + ")";
         info += "\nName: " + name;
         info += "\nLocation: " + coordinates;
         info += "\nSalary: " + salary;

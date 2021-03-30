@@ -1,16 +1,24 @@
 package command;
 
-import Utility.Receiver;
+import utility.CollectionManager;
 
-public class ClearCommand extends CommandAbstract{
-    private Receiver receiver;
-    public ClearCommand(Receiver receiver){
-        super("Clear","Clear collection");
-        this.receiver=receiver;
+/** Clear command
+ * Remove all elements from collection
+ */
+public class ClearCommand extends CommandAbstract {
+    private final CollectionManager collectionManager;
+
+    /** Command constructor
+     * @param collectionManager - collection manager, receiver
+     */
+    public ClearCommand(CollectionManager collectionManager) {
+        super("Clear", "Clear collection");
+        this.collectionManager = collectionManager;
     }
+
     @Override
-    public void exe(String arg){
-        receiver.clear();
+    public void exe(String arg) {
+        collectionManager.clear();
         System.out.println("Collection has been cleared.");
     }
 }

@@ -1,42 +1,51 @@
 package command;
 
-import Exceptions.IncorrectValueException;
-import Exceptions.NullFieldException;
-import Utility.Receiver;
-import Utility.WorkerFactory;
+import exceptions.IncorrectValueException;
+import exceptions.NullFieldException;
+import utility.CollectionManager;
+import utility.WorkerFactory;
 
 
-public class UpdateIdCommand extends CommandAbstract{
-    private final Receiver receiver;
+/** Update id command
+ * Update element with indicated id
+ */
+public class UpdateIdCommand extends CommandAbstract {
+    private final CollectionManager collectionManager;
     private final WorkerFactory workerFactory;
-    public UpdateIdCommand(Receiver receiver, WorkerFactory workerFactory){
+
+    /** Command constructor
+     * @param collectionManager - collection manager, receiver
+     * @param workerFactory - factory for worker class
+     */
+    public UpdateIdCommand(CollectionManager collectionManager, WorkerFactory workerFactory) {
         super("Update id {element}", "Update element with indicated id");
-        this.receiver = receiver;
-        this.workerFactory =workerFactory;
+        this.collectionManager = collectionManager;
+        this.workerFactory = workerFactory;
     }
+
     @Override
-    public void exe(String arg){
-        if (arg.length()==0){
-            System.out.println("Argument is needed.");
+    public void exe(String arg) {
+        if (arg.isEmpty()) {
+            System.out.println("Argument is required.");
             return;
         }
         long id;
         try {
             id = Long.parseLong(arg);
-        }catch (NumberFormatException exception){
+        } catch (NumberFormatException exception) {
             System.out.println("Input isn't id.");
             return;
         }
         try {
-            receiver.remove(receiver.getById(id));
-        }catch (NullPointerException exception){
+            collectionManager.remove(collectionManager.getById(id));
+        } catch (NullPointerException exception) {
             System.out.println("Worker with detected id wasn't found.");
             return;
         }
         long temp = workerFactory.getId();
-        workerFactory.setStartId(id-1);
+        workerFactory.setStartId(id - 1);
         try {
-            receiver.add(workerFactory.GetWorkerFromConsole());
+            collectionManager.add(workerFactory.getWorkerFromConsole());
         } catch (IncorrectValueException | NullFieldException exception) {
             System.out.println(exception.getMessage());
             return;
