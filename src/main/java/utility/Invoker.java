@@ -15,7 +15,7 @@ public class Invoker {
     private final FileWorker fileWorker;
     private final HashMap<String, CommandInterface> commands;
     private boolean isStopRequested = false;
-    private final Class[] allowedToStop = {ExitCommand.class};
+    private final Object allowedToStop = ExitCommand.class;
     private final HashSet<String> filePaths = new HashSet<>();
 
     public Invoker(WorkerFactory workerFactory, CollectionManager collectionManager, WorkerToUser workerToUser, FileWorker fileWorker) {
@@ -50,9 +50,9 @@ public class Invoker {
     }
 
     public void exe(String name, String arg) {
-        try {
+        if (commands.containsKey(name)) {
             commands.get(name).exe(arg);
-        } catch (NullPointerException exception) {
+        } else {
             System.out.println("It is not a command. Please try again.");
         }
     }
@@ -63,19 +63,19 @@ public class Invoker {
 
     /**
      * Request stop of the program
+     *
      * @param requester - is true, when program stops
      */
     public void requestExit(Object requester) {
-        for (Class c : allowedToStop) {
-            if (c.equals(requester.getClass())) {
-                isStopRequested = true;
-                break;
-            }
+        if (requester.getClass().equals(allowedToStop)) {
+            isStopRequested = true;
         }
     }
 
+
     /**
      * Add file path, which was used in execute_script to protect program  from recursion
+     *
      * @param path - path, which was used in execute_script
      */
     public void addPath(String path) {

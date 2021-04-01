@@ -11,8 +11,6 @@ import exceptions.NullFieldException;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 
@@ -22,6 +20,7 @@ import java.util.Date;
 public class WorkerFactory {
     private final Console console;
     private Long id;
+    private final FieldChecker fieldChecker;
 
     public Long getId() {
         return id;
@@ -31,9 +30,10 @@ public class WorkerFactory {
      * @param startId - start point for id counter
      * @param console - console is used to get worker from input
      */
-    public WorkerFactory(Long startId, Console console) {
+    public WorkerFactory(Long startId, Console console, FieldChecker fieldChecker) {
         this.id = startId;
         this.console = console;
+        this.fieldChecker = fieldChecker;
     }
 
     /**
@@ -105,80 +105,22 @@ public class WorkerFactory {
      * @throws IncorrectValueException - if value of the field contains wrong data, which is not allowed in this field
      */
     public Worker getWorkerFromConsole() throws NullFieldException, IncorrectValueException {
-        String name = null;
-        Long x = null;
-        Integer y = null;
-        Double salary = null;
-        ZonedDateTime startDate = null;
-        ZonedDateTime endDate = null;
+        String name;
+        Long x;
+        Integer y;
+        Double salary;
+        ZonedDateTime startDate;
+        ZonedDateTime endDate;
         Position position = null;
-        Long height = null;
-        Integer weight = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.uuuu H:mm:ss z");
+        Long height;
+        Integer weight;
 
-        while (name == null) {
-            System.out.println("Enter worker`s name:");
-            name = console.readln();
-            if (name == null) {
-                System.out.println("Input doesn't contain \"Name\". Please try again.");
-            }
-        }
-        while (x == null) {
-            System.out.println("Enter coordinate X:");
-            try {
-                x = Long.parseLong(console.readln());
-            } catch (NumberFormatException exception) {
-                System.out.println("Input doesn't contain coordinate. Please try again.");
-                x = null;
-            }
-        }
-        while (y == null) {
-            System.out.println("Enter coordinate Y:");
-            try {
-                y = Integer.parseInt(console.readln());
-            } catch (NumberFormatException exception) {
-                System.out.println("Input doesn't contain coordinate. Please try again.");
-                y = null;
-            }
-        }
-        while (salary == null) {
-            System.out.println("Enter salary:");
-            try {
-                salary = Double.parseDouble(console.readln());
-                if (salary <= 0) {
-                    System.out.println("Salary should be more than 0.");
-                    salary = null;
-                }
-            } catch (NumberFormatException exception) {
-                System.out.println("Input doesn't contain salary. Please try again.");
-                salary = null;
-            } catch (NullPointerException exception) {
-                System.out.println("Input is null. Please try again.");
-                salary = null;
-            }
-        }
-        while (startDate == null) {
-            System.out.println("Enter start date:");
-            try {
-                startDate = ZonedDateTime.parse(console.readln(), formatter);
-            } catch (NullPointerException exception) {
-                System.out.println("Input doesn't contain date. Please try again.");
-                startDate = null;
-            } catch (DateTimeParseException exception) {
-                System.out.println("Format of input is incorrect. Use dd.mm.yyyy hh:mm:ss +/-hh:mm");
-            }
-        }
-        while (endDate == null) {
-            System.out.println("Enter end date:");
-            try {
-                endDate = ZonedDateTime.parse(console.readln(), formatter);
-            } catch (NullPointerException exception) {
-                System.out.println("Input doesn't contain date. Please try again.");
-                endDate = null;
-            } catch (DateTimeParseException exception) {
-                System.out.println("Format of input is incorrect. Use dd.mm.yyyy hh:mm:ss +/-hh:mm");
-            }
-        }
+        name = fieldChecker.readAndCheckString();
+        x = fieldChecker.readAndCheckLong("coordinate X");
+        y = fieldChecker.readAndCheckInt("coordinate Y");
+        salary = fieldChecker.readAndCheckDouble("salary");
+        startDate = fieldChecker.readAndCheckZDT("start");
+        endDate = fieldChecker.readAndCheckZDT("end");
         while (position == null) {
             System.out.println("Choose one position from the list:");
             for (Position pos : Position.values()) {
@@ -186,40 +128,14 @@ public class WorkerFactory {
             }
             try {
                 position = Position.valueOf(console.readln().toUpperCase());
-            } catch (IllegalArgumentException exception) {
-                System.out.println("Input doesn't contain any of allowed positions. Please try again.");
-                position = null;
-            } catch (NullPointerException exception) {
+            } catch (IllegalArgumentException | NullPointerException exception) {
                 System.out.println("Input doesn't contain any of allowed positions. Please try again.");
                 position = null;
             }
         }
-        while (height == null) {
-            System.out.println("Enter person's height:");
-            try {
-                height = Long.parseLong(console.readln());
-            } catch (NullPointerException exception) {
-                System.out.println("Input doesn't contain height. Please try again.");
-                height = null;
-            }
-            if (height != null && height <= 0) {
-                System.out.println("Height should be more than 0.");
-                height = null;
-            }
-        }
-        while (weight == null) {
-            System.out.println("Enter person's weight:");
-            try {
-                weight = Integer.parseInt(console.readln());
-            } catch (NullPointerException exception) {
-                System.out.println("Input doesn't contain weight. Please try again.");
-                weight = null;
-            }
-            if (weight != null && weight <= 0) {
-                System.out.println("Weight should be more than 0.");
-                weight = null;
-            }
-        }
+        height = fieldChecker.readAndCheckLong("height");
+        weight = fieldChecker.readAndCheckInt("weight");
+
         return createWorker(name, new Coordinates(x, y), salary, startDate, endDate, position, new Person(height, weight));
     }
 

@@ -16,7 +16,8 @@ public class Main {
         Console console = new Console(scanner);
         CollectionManager collectionManager = new CollectionManager(console);
         FileWorker fileWorker = new FileWorker(collectionManager);
-        WorkerFactory workerFactory = new WorkerFactory(1L, console);
+        FieldChecker fieldChecker = new FieldChecker(console);
+        WorkerFactory workerFactory = new WorkerFactory(1L, console, fieldChecker);
         WorkerToUser workerToUser = new WorkerToUser();
         Invoker invoker = new Invoker(workerFactory, collectionManager, workerToUser, fileWorker);
         CommandReader commandReader = new CommandReader(scanner, invoker);

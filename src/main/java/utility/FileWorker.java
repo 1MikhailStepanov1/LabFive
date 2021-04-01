@@ -46,10 +46,10 @@ public class FileWorker {
         LinkedList<Worker> collectionFromFile = new LinkedList<>();
         Long tempId = null;
         String tempName = null;
-        Long tempX = null;
+        long tempX = 0;
         Integer tempY = null;
         ZonedDateTime tempCreationDate = null;
-        Double tempSalary = null;
+        double tempSalary = 0;
         ZonedDateTime tempStartDate = null;
         ZonedDateTime tempEndDate = null;
         Position tempPosition = null;
@@ -127,7 +127,3 @@ public class FileWorker {
         }
     }
 }
-
-
-
-

@@ -42,19 +42,17 @@ public class CommandReader {
                 break;
             }
             Matcher matcher = commandNamePattern.matcher(line);
-            matcher.find();
-            try {
+            if (matcher.find()){
                 command = matcher.group();
-            } catch (IllegalStateException e) {
+            }else{
                 System.out.println("Input is not a command.");
                 continue;
             }
             line = line.substring(command.length());
             matcher = argPattern.matcher(line);
-            matcher.find();
-            try {
+            if (matcher.find()){
                 arg = matcher.group();
-            } catch (IllegalStateException e) {
+            } else {
                 arg = "";
             }
             invoker.exe(command, arg);
