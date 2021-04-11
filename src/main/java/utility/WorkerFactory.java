@@ -18,7 +18,6 @@ import java.util.Date;
  * This class is for creating new instances of Worker class
  */
 public class WorkerFactory {
-    private final Console console;
     private Long id;
     private final FieldChecker fieldChecker;
 
@@ -28,11 +27,9 @@ public class WorkerFactory {
 
     /**
      * @param startId - start point for id counter
-     * @param console - console is used to get worker from input
      */
-    public WorkerFactory(Long startId, Console console, FieldChecker fieldChecker) {
+    public WorkerFactory(Long startId, FieldChecker fieldChecker) {
         this.id = startId;
-        this.console = console;
         this.fieldChecker = fieldChecker;
     }
 
@@ -82,15 +79,6 @@ public class WorkerFactory {
         if (startDate == null) {
             throw new NullFieldException("StartDate");
         }
-        if (endDate == null) {
-            throw new NullFieldException("EndDate");
-        }
-        if (position == null) {
-            throw new NullFieldException("Position");
-        }
-        if (person == null) {
-            throw new NullFieldException("Person");
-        }
 
         Instant instant = excreationDate.toInstant();
         ZonedDateTime creationDate = instant.atZone(ZoneId.systemDefault());
@@ -111,30 +99,19 @@ public class WorkerFactory {
         Double salary;
         ZonedDateTime startDate;
         ZonedDateTime endDate;
-        Position position = null;
+        Position position;
         Long height;
         Integer weight;
 
-        name = fieldChecker.readAndCheckString();
-        x = fieldChecker.readAndCheckLong("coordinate X");
-        y = fieldChecker.readAndCheckInt("coordinate Y");
-        salary = fieldChecker.readAndCheckDouble("salary");
-        startDate = fieldChecker.readAndCheckZDT("start");
-        endDate = fieldChecker.readAndCheckZDT("end");
-        while (position == null) {
-            System.out.println("Choose one position from the list:");
-            for (Position pos : Position.values()) {
-                System.out.println(pos.toString());
-            }
-            try {
-                position = Position.valueOf(console.readln().toUpperCase());
-            } catch (IllegalArgumentException | NullPointerException exception) {
-                System.out.println("Input doesn't contain any of allowed positions. Please try again.");
-                position = null;
-            }
-        }
-        height = fieldChecker.readAndCheckLong("height");
-        weight = fieldChecker.readAndCheckInt("weight");
+        name = fieldChecker.readAndCheckName();
+        x = fieldChecker.readAndCheckX();
+        y = fieldChecker.readAndCheckY();
+        salary = fieldChecker.readAndCheckSalary();
+        startDate = fieldChecker.readAndCheckStartDate();
+        endDate = fieldChecker.readAndCheckEndDate();
+        position = fieldChecker.readAndCheckPos();
+        height = fieldChecker.readAndCheckHeight();
+        weight = fieldChecker.readAndCheckWeight();
 
         return createWorker(name, new Coordinates(x, y), salary, startDate, endDate, position, new Person(height, weight));
     }

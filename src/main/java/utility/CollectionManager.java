@@ -105,7 +105,7 @@ public class CollectionManager {
      * @return copy collection with workers
      */
     public Collection<Worker> getCollection() {
-        return new LinkedList(collection);
+        return new LinkedList<>(collection);
     }
 
     /**

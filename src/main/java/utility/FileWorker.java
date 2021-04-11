@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.BufferedWriter;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 
 
@@ -62,36 +64,90 @@ public class FileWorker {
             Document doc = documentBuilder.parse(input);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("worker");
+            long workerNumber = 1;
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node node = nList.item(temp);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    tempId = Long.parseLong(element.getElementsByTagName("id").item(0).getTextContent());
+                    try {
+                        tempId = Long.parseLong(element.getElementsByTagName("id").item(0).getTextContent());
+                    } catch (NumberFormatException exception){
+                        System.out.println("Wrong id in worker number " + workerNumber);
+                    }
                     tempName = element.getElementsByTagName("name").item(0).getTextContent();
 
                     NodeList tempNodeListCoord = element.getElementsByTagName("coordinates");
                     Element elementCoord = (Element) tempNodeListCoord.item(0);
-                    tempX = Long.parseLong(elementCoord.getElementsByTagName("coordinateX").item(0).getTextContent());
-                    tempY = Integer.parseInt(elementCoord.getElementsByTagName("coordinateY").item(0).getTextContent());
+                    try {
+                        tempX = Long.parseLong(elementCoord.getElementsByTagName("coordinateX").item(0).getTextContent());
+                        if (tempX > 768){
+                            throw new NumberFormatException();
+                        }
+                    } catch (NumberFormatException exception) {
+                        System.out.println("Wrong coordinate X in worker number " + workerNumber);
+                    }
+                    try {
+                        tempY = Integer.parseInt(elementCoord.getElementsByTagName("coordinateY").item(0).getTextContent());
+                    } catch (NumberFormatException exception){
+                        System.out.println("Wrong coordinate Y in worker number " + workerNumber);
+                    }
 
-                    tempCreationDate = ZonedDateTime.parse(element.getElementsByTagName("creationDate").item(0).getTextContent());
-                    tempSalary = Double.parseDouble(element.getElementsByTagName("salary").item(0).getTextContent());
-                    tempStartDate = ZonedDateTime.parse(element.getElementsByTagName("startDate").item(0).getTextContent());
-                    tempEndDate = ZonedDateTime.parse(element.getElementsByTagName("endDate").item(0).getTextContent());
+                    try {
+                        tempCreationDate = ZonedDateTime.parse(element.getElementsByTagName("creationDate").item(0).getTextContent());
+                    } catch (DateTimeParseException exception){
+                        System.out.println("Wrong creation date in worker number " + workerNumber);
+                    }
+                    try{
+                        tempSalary = Double.parseDouble(element.getElementsByTagName("salary").item(0).getTextContent());
+                        if (tempSalary <= 0){
+                            throw new NumberFormatException();
+                        }
+                    } catch (NumberFormatException exception){
+                        System.out.println("Wrong salary in worker number " + workerNumber);
+                    }
+                    try {
+                        tempStartDate = ZonedDateTime.parse(element.getElementsByTagName("startDate").item(0).getTextContent());
+                    } catch (DateTimeParseException exception){
+                        System.out.println("Wrong start date in worker number " + workerNumber);
+                    }
+                    try {
+                        tempEndDate = ZonedDateTime.parse(element.getElementsByTagName("endDate").item(0).getTextContent());
+                    } catch (DateTimeParseException exception) {
+                        System.out.println("Wrong end date in worker number " + workerNumber);
+                    }
                     tempPosition = Position.valueOf(element.getElementsByTagName("position").item(0).getTextContent());
 
                     NodeList tempNodeListPerson = element.getElementsByTagName("person");
                     Element elementPerson = (Element) tempNodeListPerson.item(0);
-                    tempHeight = Long.parseLong(elementPerson.getElementsByTagName("height").item(0).getTextContent());
-                    tempWeight = Integer.parseInt(elementPerson.getElementsByTagName("weight").item(0).getTextContent());
+                    try {
+                        tempHeight = Long.parseLong(elementPerson.getElementsByTagName("height").item(0).getTextContent());
+                        if (tempHeight<=0){
+                            throw new NumberFormatException();
+                        }
+                    } catch (NumberFormatException exception){
+                        System.out.println("Wrong height in worker number " + workerNumber);
+                    }
+                    try {
+                        tempWeight = Integer.parseInt(elementPerson.getElementsByTagName("weight").item(0).getTextContent());
+                        if (tempWeight<=0){
+                            throw new NumberFormatException();
+                        }
+                    } catch (NumberFormatException exception){
+                        System.out.println("Wrong weight in worker number " + workerNumber);
+                    }
                 }
-
-                Worker worker = new Worker(tempId, tempName, new Coordinates(tempX, tempY), tempCreationDate, tempSalary, tempStartDate, tempEndDate, tempPosition, new Person(tempHeight, tempWeight));
-                collectionFromFile.add(worker);
+                workerNumber +=1;
+                if (tempId == null || tempName == null || tempY == null || tempX == 0 || tempCreationDate == null || tempSalary == 0 || tempStartDate == null){
+                    System.out.println("Worker can't be added. Some data is wrong.");
+                }else {
+                    Worker worker = new Worker(tempId, tempName, new Coordinates(tempX, tempY), tempCreationDate, tempSalary, tempStartDate, tempEndDate, tempPosition, new Person(tempHeight, tempWeight));
+                    collectionFromFile.add(worker);
+                }
             }
-        } catch (IllegalArgumentException | NullPointerException exception) {
-            System.out.println("Some fields contain incorrect data. Please correct file and try again." + exception.getMessage());
+        } catch (FactoryConfigurationError | ParserConfigurationException | IOException | SAXException exception) {
+            System.out.println("Something goes wrong. Please correct file and try again." + exception.getMessage());
         }
+
         return collectionFromFile;
     }
 
