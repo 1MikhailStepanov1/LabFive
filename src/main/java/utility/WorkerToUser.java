@@ -22,8 +22,19 @@ public class WorkerToUser {
         System.out.println("Creation Date: " + worker.getCreationDate().format(formatter));
         System.out.println("Salary: " + worker.getSalary());
         System.out.println("Start Date: " + worker.getStartDate().format(formatter));
-        System.out.println("End Date: " + worker.getEndDate().format(formatter));
-        System.out.println("Position: " + worker.getPosition());
-        System.out.println("Person: Height-" + worker.getPerson().getHeight() + " Weight-" + worker.getPerson().getWeight());
+        if (worker.getEndDate() == null){
+            System.out.println("End Date: empty");
+        } else {System.out.println("End Date: " + worker.getEndDate().format(formatter));}
+        if (worker.getPosition() == null){
+            System.out.println("Position: empty");
+        } else {System.out.println("Position: " + worker.getPosition());}
+        System.out.print("Person:");
+        if (worker.getPerson().getHeight()==null){
+            System.out.print("Height - empty");
+        } else {System.out.print("Height - " + worker.getPerson().getHeight() + " ");}
+        if (worker.getPerson().getWeight() == null){
+            System.out.println("Weight - empty");
+        } else {System.out.println("Weight - "+ worker.getPerson().getWeight());
+        }
     }
 }

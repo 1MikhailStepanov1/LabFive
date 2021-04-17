@@ -22,12 +22,19 @@ public class Main {
         Invoker invoker = new Invoker(workerFactory, collectionManager, workerToUser, fileWorker);
         CommandReader commandReader = new CommandReader(scanner, invoker);
         LinkedList<Worker> workers = new LinkedList<>();
-        try {
-            workers = fileWorker.parse();
-        } catch (FileNotFoundException exception) {
-            System.out.println("File not found.");
-        } catch (FactoryConfigurationError | ParserConfigurationException | IOException | SAXException exception) {
-            System.out.println("Something went wrong. Please correct file and try again.");
+        boolean temp = true;
+
+        while (temp) {
+            try {
+                workers = fileWorker.parse();
+                temp = false;
+            } catch (FileNotFoundException exception) {
+                System.out.println("File not found.");
+                temp = true;
+            } catch (FactoryConfigurationError | ParserConfigurationException | IOException | SAXException exception) {
+                System.out.println("Something went wrong. Please correct file and try again.");
+                temp = true;
+            }
         }
         collectionManager.load(workers);
         System.out.println("Collection was loaded successfully.");

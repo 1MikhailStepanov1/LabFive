@@ -15,10 +15,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
@@ -104,16 +101,19 @@ public class FileWorker {
                         }
                     } catch (NumberFormatException exception){
                         System.out.println("Wrong salary in worker number " + workerNumber);
+                        tempSalary = 0;
                     }
                     try {
                         tempStartDate = ZonedDateTime.parse(element.getElementsByTagName("startDate").item(0).getTextContent());
                     } catch (DateTimeParseException exception){
                         System.out.println("Wrong start date in worker number " + workerNumber);
                     }
-                    try {
-                        tempEndDate = ZonedDateTime.parse(element.getElementsByTagName("endDate").item(0).getTextContent());
-                    } catch (DateTimeParseException exception) {
-                        System.out.println("Wrong end date in worker number " + workerNumber);
+                    if (!element.getElementsByTagName("endDate").item(0).getTextContent().equals("")) {
+                        try {
+                            tempEndDate = ZonedDateTime.parse(element.getElementsByTagName("endDate").item(0).getTextContent());
+                        } catch (DateTimeParseException exception) {
+                            System.out.println("Wrong end date in worker number " + workerNumber);
+                        }
                     }
                     tempPosition = Position.valueOf(element.getElementsByTagName("position").item(0).getTextContent());
 
@@ -126,6 +126,7 @@ public class FileWorker {
                         }
                     } catch (NumberFormatException exception){
                         System.out.println("Wrong height in worker number " + workerNumber);
+                        tempHeight = 0L;
                     }
                     try {
                         tempWeight = Integer.parseInt(elementPerson.getElementsByTagName("weight").item(0).getTextContent());
@@ -134,6 +135,7 @@ public class FileWorker {
                         }
                     } catch (NumberFormatException exception){
                         System.out.println("Wrong weight in worker number " + workerNumber);
+                        tempWeight = 0;
                     }
                 }
                 workerNumber +=1;
