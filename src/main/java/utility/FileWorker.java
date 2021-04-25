@@ -146,8 +146,9 @@ public class FileWorker {
                     collectionFromFile.add(worker);
                 }
             }
+            System.out.println("Collection was loaded successfully.");
         } catch (FactoryConfigurationError | ParserConfigurationException | IOException | SAXException exception) {
-            System.out.println("Something goes wrong. Please correct file and try again." + exception.getMessage());
+            System.out.println("Something goes wrong. Please correct file and try again. (" + exception.getMessage()+")");
         }
 
         return collectionFromFile;

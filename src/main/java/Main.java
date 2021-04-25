@@ -37,7 +37,6 @@ public class Main {
             }
         }
         collectionManager.load(workers);
-        System.out.println("Collection was loaded successfully.");
         workerFactory.setStartId(collectionManager.getMaxId());
         commandReader.ActiveMode();
     }
