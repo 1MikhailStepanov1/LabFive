@@ -5,7 +5,7 @@ import data.Worker;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
+
 
 /**
  * This class is used to do all operations with collection
@@ -27,11 +27,8 @@ public class CollectionManager {
      */
     public Worker getMax() {
         Worker max;
-        try {
-            max = collection.getFirst();
-        } catch (NoSuchElementException exception) {
-            return null;
-        }
+        if (collection.getFirst() == null){return null;}
+        else {max = collection.getFirst();}
         for (Worker worker : collection) {
             if (max.compareTo(worker) > 0) {
                 max = worker;

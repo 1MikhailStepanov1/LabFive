@@ -2,13 +2,16 @@ package command;
 
 import utility.CollectionManager;
 
-/** Remove by id command
+/**
+ * Remove by id command
  * Remove element of the cllection with indicated id
  */
 public class RemoveByIdCommand extends CommandAbstract {
     private final CollectionManager collectionManager;
 
-    /** Command constructor
+    /**
+     * Command constructor
+     *
      * @param collectionManager - collection manager, receiver
      */
     public RemoveByIdCommand(CollectionManager collectionManager) {
@@ -29,11 +32,11 @@ public class RemoveByIdCommand extends CommandAbstract {
             System.out.println("Input isn't id.");
             return;
         }
-        try {
+        if (collectionManager.getById(id) == null) {
+            System.out.println("Worker with detected id wasn't found.");
+        } else {
             collectionManager.remove(collectionManager.getById(id));
             System.out.println("Element has been removed.");
-        } catch (NullPointerException exception) {
-            System.out.println("Worker with detected id wasn't found.");
         }
     }
 }
