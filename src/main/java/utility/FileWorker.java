@@ -18,7 +18,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Scanner;
+
 
 
 /**
@@ -56,12 +59,37 @@ public class FileWorker {
         Integer tempWeight = null;
         try {
             File input = new File(collectionManager.getFilePath());
+            Scanner scanner = new Scanner(input);
+            StringBuilder file = new StringBuilder();
+            HashMap<Long, String> incorrectNames = new HashMap<>();
+            long workerNumberForNames = 1;
+            while (scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                if (line.contains("<worker>")){
+                    workerNumberForNames +=1;
+                }
+                if (line.contains("<name>")){
+                    String tempLine = line;
+                    tempLine = tempLine.replace("<name>","").replace("</name>","");
+                    incorrectNames.put(workerNumberForNames, tempLine);
+                    tempLine = tempLine.replace("<","");
+                    file.append("<name>").append(tempLine).append("</name>");
+                }else {
+                    file.append(line);
+                }
+            }
+            scanner.close();
+            incorrectNames.replaceAll((s, v) -> v.replace(" ", ""));
+            FileWriter tempWriter = new FileWriter(input);
+            tempWriter.write(file.toString());
+            tempWriter.close();
+            long workerNumber = 1;
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document doc = documentBuilder.parse(input);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("worker");
-            long workerNumber = 1;
+
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node node = nList.item(temp);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -141,6 +169,9 @@ public class FileWorker {
                 workerNumber +=1;
                 if (tempId == null || tempName == null || tempY == null || tempX == 0 || tempCreationDate == null || tempSalary == 0 || tempStartDate == null){
                     System.out.println("Worker can't be added. Some data is wrong.");
+                }else if (incorrectNames.containsKey(workerNumber)){
+                    Worker worker = new Worker(tempId, incorrectNames.get(workerNumber), new Coordinates(tempX, tempY), tempCreationDate, tempSalary, tempStartDate, tempEndDate, tempPosition, new Person(tempHeight, tempWeight));
+                    collectionFromFile.add(worker);
                 }else {
                     Worker worker = new Worker(tempId, tempName, new Coordinates(tempX, tempY), tempCreationDate, tempSalary, tempStartDate, tempEndDate, tempPosition, new Person(tempHeight, tempWeight));
                     collectionFromFile.add(worker);
