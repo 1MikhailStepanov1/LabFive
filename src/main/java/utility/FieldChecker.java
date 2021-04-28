@@ -54,7 +54,7 @@ public class FieldChecker {
             }
             return result;
         };
-        return readAndCheckField("coordinate X", "(Coordinate X can't be more than 768.)", tempInterface);
+        return readAndCheckField("coordinate X", "(Reminder: Coordinate X can't be more than 768.)", tempInterface);
     }
 
     public Integer readAndCheckY() {
@@ -70,7 +70,7 @@ public class FieldChecker {
             }
             return result;
         };
-        return readAndCheckField("salary", "(Salary should be more than 0.)", tempInterface);
+        return readAndCheckField("salary", "(Reminder: Salary should be more than 0.)", tempInterface);
     }
 
     public ZonedDateTime readAndCheckStartDate() {
@@ -111,7 +111,7 @@ public class FieldChecker {
             }
             return result;
         };
-        return readAndCheckField("height", "(Height should be more than 0.)", tempInterface);
+        return readAndCheckField("height", "(Reminder: Height should be more than 0.)", tempInterface);
     }
 
     public Integer readAndCheckWeight() throws NumberFormatException {
@@ -122,6 +122,6 @@ public class FieldChecker {
             }
             return result;
         };
-        return readAndCheckField("weight", "(Weight should be more than 0.)", tempInterface);
+        return readAndCheckField("weight", "(Reminder: Weight should be more than 0.)", tempInterface);
     }
 }
