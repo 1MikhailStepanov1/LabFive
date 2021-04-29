@@ -1,5 +1,6 @@
 package command;
 
+import data.Worker;
 import utility.CollectionManager;
 
 /**
@@ -32,10 +33,11 @@ public class RemoveByIdCommand extends CommandAbstract {
             System.out.println("Input isn't id.");
             return;
         }
-        if (collectionManager.getById(id) == null) {
+        Worker worker = collectionManager.getById(id);
+        if (worker == null) {
             System.out.println("Worker with detected id wasn't found.");
         } else {
-            collectionManager.remove(collectionManager.getById(id));
+            collectionManager.remove(worker);
             System.out.println("Element has been removed.");
         }
     }

@@ -27,7 +27,7 @@ public class CollectionManager {
      */
     public Worker getMax() {
         Worker max;
-        if (collection.getFirst() == null){return null;}
+        if (collection.isEmpty()){return null;}
         else {max = collection.getFirst();}
         for (Worker worker : collection) {
             if (max.compareTo(worker) > 0) {

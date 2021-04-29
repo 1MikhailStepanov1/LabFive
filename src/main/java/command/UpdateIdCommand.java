@@ -1,5 +1,6 @@
 package command;
 
+import data.Worker;
 import exceptions.IncorrectValueException;
 import exceptions.NullFieldException;
 import utility.CollectionManager;
@@ -36,12 +37,12 @@ public class UpdateIdCommand extends CommandAbstract {
             System.out.println("Input isn't id.");
             return;
         }
-        try {
-            collectionManager.remove(collectionManager.getById(id));
-        } catch (NullPointerException exception) {
+        Worker worker = collectionManager.getById(id);
+        if (worker == null){
             System.out.println("Worker with detected id wasn't found.");
             return;
-        }
+        }else {collectionManager.remove(worker);}
+
         long temp = workerFactory.getId();
         workerFactory.setStartId(id - 1);
         try {
