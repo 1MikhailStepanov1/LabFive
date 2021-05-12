@@ -8,10 +8,12 @@ import exceptions.IncorrectValueException;
 import exceptions.NullFieldException;
 
 
+import java.lang.reflect.Field;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.Scanner;
 
 
 /**
@@ -19,8 +21,8 @@ import java.util.Date;
  */
 public class WorkerFactory {
     private Long id;
-    private final FieldChecker fieldChecker;
-
+    private Scanner scanner;
+    private boolean boolWF;
     public Long getId() {
         return id;
     }
@@ -28,9 +30,17 @@ public class WorkerFactory {
     /**
      * @param startId - start point for id counter
      */
-    public WorkerFactory(Long startId, FieldChecker fieldChecker) {
+    public WorkerFactory(Long startId) {
         this.id = startId;
-        this.fieldChecker = fieldChecker;
+    }
+    public void setScanner(Scanner scanner){
+        this.scanner = scanner;
+    }
+    public Scanner getScanner(){
+        return scanner;
+    }
+    public void setBoolean(boolean bo){
+        boolWF = bo;
     }
 
     /**
@@ -103,6 +113,7 @@ public class WorkerFactory {
         Long height;
         Integer weight;
 
+        FieldChecker fieldChecker = new FieldChecker(scanner,boolWF);
         name = fieldChecker.readAndCheckName();
         x = fieldChecker.readAndCheckX();
         y = fieldChecker.readAndCheckY();

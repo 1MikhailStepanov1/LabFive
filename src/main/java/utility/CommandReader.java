@@ -23,7 +23,6 @@ public class CommandReader {
         this.invoker = invoker;
         commandNamePattern = Pattern.compile("^\\w+");
         argPattern = Pattern.compile("\\b(.*\\s*)*");
-
     }
 
     /**
@@ -31,7 +30,7 @@ public class CommandReader {
      * Loop reads commands and calls invoker
      * Loop is finished when input is empty or exit commands is called
      */
-    public void ActiveMode() {
+    public void activeMode() {
         String line;
         String command;
         String arg;
@@ -56,6 +55,7 @@ public class CommandReader {
                 arg = "";
             }
             invoker.exe(command, arg);
-        } while (!invoker.isStopRequested() && scanner.hasNext());
+        } while (!invoker.isStopRequested());
     }
+
 }

@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * This class is used to do all operations with collection
  */
 public class CollectionManager {
-    private final LinkedList<Worker> collection;
+    private LinkedList<Worker> collection;
     private boolean ExeDone;
     private final ZonedDateTime InitTime;
     private final Console console;
@@ -104,6 +104,7 @@ public class CollectionManager {
     public Collection<Worker> getCollection() {
         return new LinkedList<>(collection);
     }
+    public void setCollection(Collection col){collection = (LinkedList<Worker>) col;}
 
     /**
      * Load collection from indicated file
@@ -126,12 +127,24 @@ public class CollectionManager {
         }
         return maxId;
     }
-
-    /**
-     * @return string which contains file path
-     */
-    public String getFilePath() {
-        System.out.println("Enter path: ");
-        return console.readln();
+    public LinkedList<Worker> getTemp1(long id){
+        ExeDone = true;
+        LinkedList<Worker> temp1 = new LinkedList<>();
+        for (Worker worker : collection){
+            if (worker.getId() < id){
+                temp1.add(worker);
+            }
+        }
+        return temp1;
+    }
+    public LinkedList<Worker> getTemp2(long id){
+        ExeDone = true;
+        LinkedList<Worker> temp2 = new LinkedList<>();
+        for (Worker worker : collection){
+            if (id < worker.getId()){
+                temp2.add(worker);
+            }
+        }
+        return temp2;
     }
 }

@@ -16,17 +16,17 @@ public class Main {
         Console console = new Console(scanner);
         CollectionManager collectionManager = new CollectionManager(console);
         FileWorker fileWorker = new FileWorker(collectionManager);
-        FieldChecker fieldChecker = new FieldChecker(console);
-        WorkerFactory workerFactory = new WorkerFactory(1L, fieldChecker);
+        WorkerFactory workerFactory = new WorkerFactory(1L);
+        workerFactory.setBoolean(true);
         WorkerToUser workerToUser = new WorkerToUser();
         Invoker invoker = new Invoker(workerFactory, collectionManager, workerToUser, fileWorker);
         CommandReader commandReader = new CommandReader(scanner, invoker);
         LinkedList<Worker> workers = new LinkedList<>();
+        workerFactory.setScanner(scanner);
         boolean temp = true;
-
         while (temp) {
             try {
-                workers = fileWorker.parse();
+                workers = fileWorker.parse(args[0]);
                 temp = false;
             } catch (FileNotFoundException exception) {
                 System.out.println("File not found.");
@@ -34,10 +34,13 @@ public class Main {
             } catch (FactoryConfigurationError | ParserConfigurationException | IOException | SAXException exception) {
                 System.out.println("Something went wrong. Please correct file and try again.");
                 temp = true;
+            } catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("You should enter file's path as command line argument.");
+                break;
             }
         }
         collectionManager.load(workers);
         workerFactory.setStartId(collectionManager.getMaxId());
-        commandReader.ActiveMode();
-    }
+        commandReader.activeMode();
+}
 }

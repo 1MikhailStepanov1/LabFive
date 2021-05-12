@@ -5,19 +5,27 @@ import data.Position;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class FieldChecker {
-    private final Console console;
+    private final Scanner scanner;
+    private boolean bool;
 
-    public FieldChecker(Console console) {
-        this.console = console;
+    public FieldChecker(Scanner scanner, boolean bool) {
+        this.scanner = scanner;
+        this.bool = bool;
     }
+
 
     public <T> T readAndCheckField(String FieldName, String error, FieldCheckerHelp<T> rule) {
         T temp;
         while (true) {
-            System.out.println("Enter worker`s " + FieldName + ":");
+            if (bool) {
+                System.out.println("Enter worker`s " + FieldName + ":");
+            }
             try {
+                Console console = new Console(scanner);
                 temp = rule.check(console.readln());
             } catch (NumberFormatException exception) {
                 System.out.println("Input is incorrect. Please, try again." + error);
@@ -31,10 +39,13 @@ public class FieldChecker {
             } catch (IllegalArgumentException exception) {
                 System.out.println("Input doesn't contain allowed positions. Please, try again.");
                 continue;
+            } catch (NoSuchElementException exception) {
+                continue;
             }
             return temp;
         }
     }
+
 
     public String readAndCheckName() throws NumberFormatException {
         FieldCheckerHelp<String> tempInterface = str -> {
@@ -94,11 +105,17 @@ public class FieldChecker {
     }
 
     public Position readAndCheckPos() {
-        FieldCheckerHelp<Position> tempInterface = str -> {
+        if (bool) {
             for (Position pos : Position.values()) {
                 System.out.println(pos.toString());
             }
-            return Position.valueOf(str.toUpperCase());
+        }
+        FieldCheckerHelp<Position> tempInterface = str -> {
+            if (str == null) {
+                return null;
+            } else {
+                return Position.valueOf(str.toUpperCase());
+            }
         };
         return readAndCheckField("position", "", tempInterface);
     }

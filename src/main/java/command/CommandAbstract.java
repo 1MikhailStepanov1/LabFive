@@ -1,5 +1,7 @@
 package command;
 
+import utility.Console;
+
 /**
  * Abstract command class contains name and description
  */

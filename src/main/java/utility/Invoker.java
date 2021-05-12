@@ -2,8 +2,10 @@ package utility;
 
 import command.*;
 
+
 import java.util.HashMap;
 import java.util.HashSet;
+
 
 /**
  * This class contains map with commands which can be execute
@@ -46,7 +48,7 @@ public class Invoker {
         commands.put("group_counting_by_position", new GroupCountingByPositionCommand(collectionManager));
         commands.put("count_less_than_start_date", new CountLessThanStartDateCommand(collectionManager));
         commands.put("filter_greater_than_start_date", new FilterGreaterThanStartDateCommand(workerToUser, collectionManager));
-        commands.put("execute_script", new ExecuteScriptCommand(this));
+        commands.put("execute_script", new ExecuteScriptCommand(this, workerFactory));
     }
 
     public void exe(String name, String arg) {

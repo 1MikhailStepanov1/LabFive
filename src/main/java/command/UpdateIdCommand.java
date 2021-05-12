@@ -6,6 +6,8 @@ import exceptions.NullFieldException;
 import utility.CollectionManager;
 import utility.WorkerFactory;
 
+import java.util.LinkedList;
+
 
 /** Update id command
  * Update element with indicated id
@@ -26,6 +28,8 @@ public class UpdateIdCommand extends CommandAbstract {
 
     @Override
     public void exe(String arg) {
+        LinkedList<Worker> temp1 = new LinkedList<>();
+        LinkedList<Worker> temp2 = new LinkedList<>();
         if (arg.isEmpty()) {
             System.out.println("Argument is required.");
             return;
@@ -37,21 +41,24 @@ public class UpdateIdCommand extends CommandAbstract {
             System.out.println("Input isn't id.");
             return;
         }
+        temp1 = collectionManager.getTemp1(id);
+        temp2 = collectionManager.getTemp2(id);
         Worker worker = collectionManager.getById(id);
         if (worker == null){
             System.out.println("Worker with detected id wasn't found.");
             return;
         }else {collectionManager.remove(worker);}
-
-        long temp = workerFactory.getId();
-        workerFactory.setStartId(id - 1);
+        LinkedList<Worker> res = temp1;
+        long tempId = workerFactory.getId();
+        workerFactory.setStartId(id-1);
         try {
-            collectionManager.add(workerFactory.getWorkerFromConsole());
+            res.add(workerFactory.getWorkerFromConsole());
         } catch (IncorrectValueException | NullFieldException exception) {
             System.out.println(exception.getMessage());
             return;
         }
-        workerFactory.setStartId(temp);
-
+        res.addAll(temp2);
+        collectionManager.setCollection(res);
+        workerFactory.setStartId(tempId);
     }
 }

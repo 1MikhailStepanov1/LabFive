@@ -16,8 +16,8 @@
             <height>193</height>
             <weight>85</weight>
         </person>
-    </worker
-    ><worker>
+    </worker    >
+<worker>
     <id>2</id>
     <name>Petya</name>
     <coordinates>
@@ -33,8 +33,8 @@
         <height>555</height>
         <weight>88</weight>
     </person>
-</worker
-><worker>
+</worker>
+<worker>
     <id>3</id>
     <name>Zhenya</name>
     <coordinates>

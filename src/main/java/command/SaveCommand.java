@@ -22,6 +22,6 @@ public class SaveCommand extends CommandAbstract {
 
     @Override
     public void exe(String arg) {
-        fileWorker.getToXmlFormat(collectionManager.getFilePath());
+        fileWorker.getToXmlFormat(fileWorker.getFilePath());
     }
 }
